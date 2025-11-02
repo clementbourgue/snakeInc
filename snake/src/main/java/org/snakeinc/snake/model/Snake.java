@@ -1,7 +1,5 @@
 package org.snakeinc.snake.model;
 
-import java.awt.Color;
-import java.awt.Graphics;
 import java.util.ArrayList;
 
 public class Snake {
@@ -10,7 +8,7 @@ public class Snake {
 
     public Snake() {
         body = new ArrayList<>();
-        body.add(new Tile(5, 5)); // La tête du serpent
+        body.add(Grid.getInstance().getTile(5,5)); // La tête du serpent
     }
 
     public ArrayList<Tile> getBody() {
@@ -45,13 +43,6 @@ public class Snake {
 
         body.addFirst(newHead);
         body.removeLast(); // Supprime le dernier segment pour simuler le déplacement
-    }
-
-    public void draw(Graphics g) {
-        for (Tile t : body) {
-            g.setColor(Color.GREEN);
-            t.drawRectangle(g);
-        }
     }
 
     public boolean checkSelfCollision() {

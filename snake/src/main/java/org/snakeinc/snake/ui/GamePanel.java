@@ -1,4 +1,4 @@
-package org.snakeinc.snake;
+package org.snakeinc.snake.ui;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -22,8 +22,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
     public static final int GAME_WIDTH = TILE_SIZE * N_TILES_X;
     public static final int GAME_HEIGHT = TILE_SIZE * N_TILES_Y;
     private Timer timer;
-    private Snake snake;
-    private Apple apple;
+    private SnakeComponent snakeComponent;
+    private AppleComponent appleComponent;
     private boolean running = false;
     private char direction = 'R';
 
@@ -32,13 +32,12 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
         this.setBackground(Color.BLACK);
         this.setFocusable(true);
         this.addKeyListener(this);
-
         startGame();
     }
 
     private void startGame() {
-        snake = new Snake();
-        apple = new Apple();
+        snakeComponent = new SnakeComponent(new Snake());
+        appleComponent = new AppleComponent(new Apple());
         timer = new Timer(100, this);
         timer.start();
         running = true;
@@ -48,8 +47,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         if (running) {
-            apple.draw(g);
-            snake.draw(g);
+            appleComponent.draw(g);
+            snakeComponent.draw(g);
         } else {
             gameOver(g);
         }
@@ -64,21 +63,21 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 
     private void checkCollision() {
         // Vérifie si le serpent se mord ou sort de l'écran
-        if (snake.checkSelfCollision() || snake.checkWallCollision()) {
+        if (snakeComponent.getSnake().checkSelfCollision() || snakeComponent.getSnake().checkWallCollision()) {
             running = false;
             timer.stop();
         }
         // Vérifie si le serpent mange la pomme
-        if (snake.getHead().equals(apple.getPosition())) {
-            snake.eat(apple);
-            apple.updateLocation();
+        if (snakeComponent.getSnake().getHead().equals(appleComponent.getApple().getPosition())) {
+            snakeComponent.getSnake().eat(appleComponent.getApple());
+            appleComponent.getApple().updateLocation();
         }
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         if (running) {
-            snake.move(direction);
+            snakeComponent.getSnake().move(direction);
             checkCollision();
         }
         repaint();

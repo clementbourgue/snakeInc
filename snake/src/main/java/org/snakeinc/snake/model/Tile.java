@@ -3,7 +3,7 @@ package org.snakeinc.snake.model;
 import java.awt.Graphics;
 import java.util.Objects;
 import lombok.Getter;
-import org.snakeinc.snake.GamePanel;
+import org.snakeinc.snake.ui.GamePanel;
 
 
 public class Tile {

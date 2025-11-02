@@ -1,10 +1,8 @@
 package org.snakeinc.snake.model;
 
-import java.awt.Color;
-import java.awt.Graphics;
 import java.util.Random;
 import lombok.Getter;
-import org.snakeinc.snake.GamePanel;
+import org.snakeinc.snake.ui.GamePanel;
 
 public class Apple {
 
@@ -21,11 +19,6 @@ public class Apple {
         position = new Tile(random.nextInt(0, (GamePanel.GAME_WIDTH / GamePanel.TILE_SIZE)),
                 random.nextInt(0, (GamePanel.GAME_HEIGHT / GamePanel.TILE_SIZE)));
 
-    }
-
-    public void draw(Graphics g) {
-        g.setColor(Color.RED);
-        position.drawOval(g);
     }
 
 }
