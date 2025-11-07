@@ -1,6 +1,7 @@
 package org.snakeinc.snake.model;
 
 import java.util.ArrayList;
+import org.snakeinc.snake.GameParams;
 import org.snakeinc.snake.exception.OutOfPlayException;
 import org.snakeinc.snake.exception.SelfCollisionException;
 
@@ -10,13 +11,13 @@ public class Snake implements GameObject {
 
     public Snake() {
         body = new ArrayList<>();
-        Cell head = Grid.getInstance().getTile(1, 1);
+        Cell head = Grid.getInstance().getTile(GameParams.SNAKE_DEFAULT_X, GameParams.SNAKE_DEFAULT_Y);
         body.add(head);
-        head.getGameObjectsInTile().add(this);
+        head.addGameObject(this);
     }
 
-    public ArrayList<Cell> getBody() {
-        return body;
+    public int getSize() {
+        return body.size();
     }
 
     public Cell getHead() {

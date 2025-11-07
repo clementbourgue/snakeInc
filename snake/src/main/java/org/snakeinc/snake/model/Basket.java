@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import lombok.Data;
+import org.snakeinc.snake.GameParams;
 
 @Data
 public class Basket {
@@ -23,9 +24,12 @@ public class Basket {
         return instance;
     }
 
-    public void addApple() {
-        var random = new Random();
-        Cell cell = Grid.getInstance().getTile(random.nextInt(0, Grid.TILES_X), random.nextInt(0, Grid.TILES_Y));
+    public void addApple(Cell cell) {
+        if (cell == null) {
+            var random = new Random();
+            cell = Grid.getInstance()
+                    .getTile(random.nextInt(0, GameParams.TILES_X), random.nextInt(0, GameParams.TILES_Y));
+        }
         Apple apple = AppleFactory.createAppleInCell(cell);
         apples.add(apple);
     }
@@ -41,7 +45,7 @@ public class Basket {
 
     private void refill(int nApples) {
         for (int i = 0; i < nApples; i++) {
-            addApple();
+            addApple(null);
         }
     }
 

@@ -11,6 +11,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import javax.swing.JPanel;
 import javax.swing.Timer;
+import org.snakeinc.snake.GameParams;
 import org.snakeinc.snake.exception.OutOfPlayException;
 import org.snakeinc.snake.exception.SelfCollisionException;
 import org.snakeinc.snake.model.Basket;
@@ -20,8 +21,8 @@ import org.snakeinc.snake.model.Snake;
 public class GamePanel extends JPanel implements ActionListener, KeyListener {
 
     public static final int TILE_PIXEL_SIZE = 20;
-    public static final int GAME_PIXEL_WIDTH = TILE_PIXEL_SIZE * Grid.TILES_X;
-    public static final int GAME_PIXEL_HEIGHT = TILE_PIXEL_SIZE * Grid.TILES_Y;
+    public static final int GAME_PIXEL_WIDTH = TILE_PIXEL_SIZE * GameParams.TILES_X;
+    public static final int GAME_PIXEL_HEIGHT = TILE_PIXEL_SIZE * GameParams.TILES_Y;
 
     private Timer timer;
     private Snake snake;
