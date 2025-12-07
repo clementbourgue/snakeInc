@@ -21,7 +21,7 @@ public class SnakeTest {
     void snakeMovesUp_ReturnCorrectHead() throws OutOfPlayException, SelfCollisionException {
         game.getSnake().move('U');
         Assertions.assertEquals(5, game.getSnake().getHead().getX());
-        Assertions.assertEquals(5, game.getSnake().getHead().getY());
+        Assertions.assertEquals(4, game.getSnake().getHead().getY());
     }
 
 }

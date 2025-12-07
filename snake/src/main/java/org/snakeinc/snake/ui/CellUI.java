@@ -6,6 +6,12 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import lombok.AllArgsConstructor;
 import org.snakeinc.snake.model.Cell;
+import org.snakeinc.snake.model.Snake;
+import org.snakeinc.snake.model.Anaconda;
+import org.snakeinc.snake.model.Python;
+import org.snakeinc.snake.model.BoaConstrictor;
+import org.snakeinc.snake.model.SnakeFood;
+
 
 @AllArgsConstructor
 public class CellUI {
@@ -17,7 +23,7 @@ public class CellUI {
     public void drawRectangle(Graphics g) {
         g.fillRect(upperPixelX, upperPixelY, GamePanel.TILE_PIXEL_SIZE, GamePanel.TILE_PIXEL_SIZE);
         Graphics2D g2 = (Graphics2D) g;
-        g2.setColor(Color.GREEN.darker());
+        g2.setColor(Color.BLUE.darker());
         g2.setStroke(new BasicStroke(2));
         g2.drawRect(upperPixelX, upperPixelY, GamePanel.TILE_PIXEL_SIZE, GamePanel.TILE_PIXEL_SIZE);
     }
@@ -28,15 +34,30 @@ public class CellUI {
 
     public void draw(Graphics g) {
 
-        if (cell.containsAnApple()) {
-            g.setColor(Color.RED);
+        if (cell.containsFood()) {
+            SnakeFood food = cell.getFood();
+            g.setColor(food.getColor());
             drawOval(g);
         }
+
         if (cell.containsASnake()) {
-            g.setColor(Color.GREEN);
+            Snake snake = cell.getSnake();
+
+            Color snakeColor;
+            if (snake instanceof Anaconda) {
+                snakeColor = Color.GRAY;        // Anaconda : gris
+            } else if (snake instanceof Python) {
+                snakeColor = Color.GREEN;       // Python : vert
+            } else if (snake instanceof BoaConstrictor) {
+                snakeColor = Color.BLUE;        // Boa : bleu
+            } else {
+                snakeColor = Color.GREEN;       // fallback sécurité
+            }
+
+            g.setColor(snakeColor);
             drawRectangle(g);
         }
-
     }
+
 
 }

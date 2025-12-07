@@ -56,15 +56,45 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
         g.setColor(Color.RED);
         g.setFont(new Font("Arial", Font.BOLD, 20));
         FontMetrics metrics = getFontMetrics(g.getFont());
-        g.drawString("Game Over", (GAME_PIXEL_WIDTH - metrics.stringWidth("Game Over")) / 2, GAME_PIXEL_HEIGHT / 2);
+
+        String gameOverText = "Game Over";
+        int x = (GAME_PIXEL_WIDTH - metrics.stringWidth(gameOverText)) / 2;
+        int y = GAME_PIXEL_HEIGHT / 2;
+
+        g.drawString(gameOverText, x, y);
+
+        // affichage des stats
+        g.setColor(Color.WHITE);
+        g.setFont(new Font("Arial", Font.PLAIN, 16));
+        FontMetrics statsMetrics = getFontMetrics(g.getFont());
+
+        String movesText = "Moves: " + game.getMovesCount();
+        String foodsText = "Food eaten: " + game.getFoodsEatenCount();
+        String pointsText = "Points: " + game.getPoints();
+
+        int lineSpacing = statsMetrics.getHeight() + 5;
+
+        g.drawString(movesText,
+                (GAME_PIXEL_WIDTH - statsMetrics.stringWidth(movesText)) / 2,
+                y + lineSpacing);
+
+        g.drawString(foodsText,
+                (GAME_PIXEL_WIDTH - statsMetrics.stringWidth(foodsText)) / 2,
+                y + 2 * lineSpacing);
+
+        g.drawString(pointsText,
+                (GAME_PIXEL_WIDTH - statsMetrics.stringWidth(pointsText)) / 2,
+                y + 3 * lineSpacing);
     }
+
 
     @Override
     public void actionPerformed(ActionEvent e) {
         if (running) {
             try {
                 game.iterate(direction);
-            } catch (OutOfPlayException | SelfCollisionException exception) {
+            } catch (OutOfPlayException | SelfCollisionException | RuntimeException exception) {
+                exception.printStackTrace();
                 timer.stop();
                 running = false;
             }
