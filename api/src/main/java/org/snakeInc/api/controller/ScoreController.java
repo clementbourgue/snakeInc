@@ -8,6 +8,7 @@ import org.snakeInc.api.entities.SnakeType;
 import org.snakeInc.api.service.ScoreService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.snakeInc.api.dto.ScoresResponse;
 
 import java.time.LocalDateTime;
 
@@ -47,4 +48,12 @@ public class ScoreController {
             @Min(value = 1, message = "playerId must be >= 1")
             int playerId
     ) {}
+
+    @GetMapping
+    public ResponseEntity<ScoresResponse> getScores(
+            @RequestParam(required = false) SnakeType snake,
+            @RequestParam(required = false, name = "player") Integer playerId
+    ) {
+        return ResponseEntity.ok(new ScoresResponse(scoreService.getScores(snake, playerId)));
+    }
 }

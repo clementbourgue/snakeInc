@@ -1,5 +1,6 @@
 package org.snakeInc.api.service;
 
+import org.snakeInc.api.dto.ScoreResponseDto;
 import org.snakeInc.api.entities.Player;
 import org.snakeInc.api.entities.Score;
 import org.snakeInc.api.entities.SnakeType;
@@ -8,6 +9,7 @@ import org.snakeInc.api.repository.ScoreRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class ScoreService {
@@ -26,5 +28,28 @@ public class ScoreService {
 
         Score newScore = new Score(snake, score, playedAt, player);
         return scoreRepository.save(newScore);
+    }
+
+    public List<ScoreResponseDto> getScores(SnakeType snake, Integer playerId) {
+        List<Score> scores;
+
+        if (snake != null && playerId != null) {
+            scores = scoreRepository.findBySnakeAndPlayer_Id(snake, playerId);
+        } else if (snake != null) {
+            scores = scoreRepository.findBySnake(snake);
+        } else if (playerId != null) {
+            scores = scoreRepository.findByPlayer_Id(playerId);
+        } else {
+            scores = scoreRepository.findAll();
+        }
+
+        return scores.stream()
+                .map(s -> new ScoreResponseDto(
+                        s.getSnake().name(),
+                        s.getScore(),
+                        s.getPlayedAt(),
+                        s.getPlayer().getId()
+                ))
+                .toList();
     }
 }
