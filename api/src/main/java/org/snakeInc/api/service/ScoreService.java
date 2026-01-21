@@ -7,6 +7,9 @@ import org.snakeInc.api.entities.SnakeType;
 import org.snakeInc.api.repository.PlayerRepository;
 import org.snakeInc.api.repository.ScoreRepository;
 import org.springframework.stereotype.Service;
+import org.snakeInc.api.dto.ScoreStatsDto;
+import org.snakeInc.api.repository.ScoreStatsView;
+import org.snakeInc.api.dto.ScoresStatsResponse;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -51,5 +54,24 @@ public class ScoreService {
                         s.getPlayer().getId()
                 ))
                 .toList();
+    }
+
+    public ScoresStatsResponse getStatsForPlayer(int playerId) {
+
+        playerRepository.findById(playerId)
+                .orElseThrow(() -> new PlayerNotFoundException(playerId));
+
+        List<ScoreStatsView> rawStats = scoreRepository.findStatsByPlayer(playerId);
+
+        List<ScoreStatsDto> stats = rawStats.stream()
+                .map(s -> new ScoreStatsDto(
+                        s.getSnake().name(),
+                        s.getMin(),
+                        s.getMax(),
+                        s.getAverage()
+                ))
+                .toList();
+
+        return new ScoresStatsResponse(playerId, stats);
     }
 }

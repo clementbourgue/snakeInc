@@ -9,6 +9,7 @@ import org.snakeInc.api.service.ScoreService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.snakeInc.api.dto.ScoresResponse;
+import org.snakeInc.api.dto.ScoresStatsResponse;
 
 import java.time.LocalDateTime;
 
@@ -56,4 +57,12 @@ public class ScoreController {
     ) {
         return ResponseEntity.ok(new ScoresResponse(scoreService.getScores(snake, playerId)));
     }
+
+    @GetMapping("/stats")
+    public ResponseEntity<ScoresStatsResponse> getStats(
+            @RequestParam(name = "player") int playerId
+    ) {
+        return ResponseEntity.ok(scoreService.getStatsForPlayer(playerId));
+    }
+
 }
