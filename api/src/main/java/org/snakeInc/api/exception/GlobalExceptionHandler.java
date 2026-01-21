@@ -10,6 +10,11 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.snakeInc.api.service.PlayerNotFoundException;
+import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.http.HttpStatus;
+
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -34,6 +39,22 @@ public class GlobalExceptionHandler {
 
         body.put("details", errors);
 
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
+    }
+
+    @ExceptionHandler(PlayerNotFoundException.class)
+    public ResponseEntity<Map<String, Object>> handlePlayerNotFound(PlayerNotFoundException ex) {
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("error", "Player not found");
+        body.put("playerId", ex.getPlayerId());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(body);
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<Map<String, Object>> handleBadRequest(HttpMessageNotReadableException ex) {
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("error", "Malformed request");
+        body.put("message", ex.getMostSpecificCause().getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
     }
 }
